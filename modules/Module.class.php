@@ -12,9 +12,11 @@ class Module {
                 $_SESSION[$this->service] = array();
             }
             if(!isset($_SESSION[$this->service]["json_client"])) {
-                if(ereg('^(.*)(/)$', $CONF['soap_url'])) { 
-                        $motif = ereg('^(.*)(/)$', $CONF['soap_url'], $r); 
-                        $CONF['soap_url'] = $r[1]; 
+                if(preg_match('/^(.*)(\/)$/', $CONF['soap_url'])) {
+                        $motif = preg_match('/^(.*)(\/)$/', $CONF['soap_url'], $r);
+                        var_dump($r);
+                        var_dump($motif);
+                        $CONF['soap_url'] = current($r[0]); 
                 } 
                 $_SESSION[$this->service]["json_client"] = new \JsonClient\AutoJsonClient($CONF['soap_url'], $this->service);
                 $this->json_client = $_SESSION[$this->service]["json_client"];
