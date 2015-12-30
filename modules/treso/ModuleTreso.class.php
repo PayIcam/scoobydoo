@@ -2,6 +2,8 @@
 
 require_once 'modules/Module.class.php';
 
+include('config.php'); 
+
 class ModuleTreso extends Module {
 
 	protected $service = "TRESO";
