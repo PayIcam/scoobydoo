@@ -103,6 +103,12 @@ class ModuleTreso extends Module {
 				"frais" => $frais*100
 				));
 
+			//messsage via mail pour demande de reversement
+			$message_demande_reversement = "tu as une nouvelle demande de reversement sur Payicam: https://barcafetlille.icam.fr/dev/scoobydoo/";
+			foreach ($CONF['mail_tresorier'] as $mail) {
+				mail($mail, 'Demande de reversement', $message_demande_reversement);
+			}
+
 			header("Location: ".$this->get_link_to_action("details")."&fun_id=");
 			exit();
 		}
@@ -111,6 +117,9 @@ class ModuleTreso extends Module {
 		$this->view->add_param("fundations", $this->json_client->getFundations());
 		$this->view->set_template('html');
 		$this->view->set_view($this->get_path_module()."view/reversement.phtml");
+
+
+
 	}
 }
 
