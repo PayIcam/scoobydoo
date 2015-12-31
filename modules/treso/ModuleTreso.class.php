@@ -84,8 +84,8 @@ class ModuleTreso extends Module {
 			<body>
 				<h1>'.$subject.'</h1>
 				<p>Tu as une nouvelle demande de reversement sur Payicam</p>
-				<p><a href="http://payicam.dev/scoobydoo/?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super trésorerie de PayIcam</a></p>
-				<p>On t\'embrasse, la dev team de PayIcam</p>
+				<p><a href="'.$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super trésorerie de PayIcam</a></p>
+				<p><em>On t\'embrasse, la dev team de PayIcam</em></p>
 			</body>
 		</html>
 		';
