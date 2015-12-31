@@ -2,8 +2,6 @@
 
 require_once 'modules/Module.class.php';
 
-include('config.php'); 
-
 class ModuleTreso extends Module {
 
 	protected $service = "TRESO";
@@ -67,6 +65,43 @@ class ModuleTreso extends Module {
 
 	protected function action_askreversement() {
 		$fun_id = $_GET['fun_id'];
+		global $CONF;
+		var_dump($CONF);
+		var_dump($fun_id);
+
+		// Plusieurs destinataires
+	    $to  = implode(', ', $CONF['mails_tresorier']);
+		// Sujet
+		$subject = 'Demande de reversement fondation #'.$fun_id;
+
+
+		//messsage via mail pour demande de reversement
+		$message = '
+		<html>
+			<head>
+				<title>'.$subject.'</title>
+			</head>
+			<body>
+				<h1>'.$subject.'</h1>
+				<p>Tu as une nouvelle demande de reversement sur Payicam</p>
+				<p><a href="http://payicam.dev/scoobydoo/?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super trésorerie de PayIcam</a></p>
+				<p>On t\'embrasse, la dev team de PayIcam</p>
+			</body>
+		</html>
+		';
+
+	    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+	    $headers  = 'MIME-Version: 1.0' . "\r\n";
+	    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+
+	    // En-têtes additionnels
+	    $headers .= 'From: PayIcam <payicam.lille@gmail.com>' . "\r\n";
+	    $headers .= 'Reply-To: PayIcam <payicam.lille@gmail.com>' . "\r\n";
+	    $headers .= 'Subject: '.$subject . "\r\n";
+
+		var_dump(mail($to, $subject, $message, $headers));
+		exit();
+
 		$this->json_client->askReversement(array("fun_id" => $fun_id));
 		header("Location: ".$this->get_link_to_action("details")."&fun_id=".$fun_id);
 		exit();
@@ -103,13 +138,7 @@ class ModuleTreso extends Module {
 				"rev_id" => $rev_id,
 				"taux" => $taux*100,
 				"frais" => $frais*100
-				));
-
-			//messsage via mail pour demande de reversement
-			$message_demande_reversement = "tu as une nouvelle demande de reversement sur Payicam: https://barcafetlille.icam.fr/dev/scoobydoo/";
-			foreach ($CONF['mail_tresorier'] as $mail) {
-				mail($mail, 'Demande de reversement', $message_demande_reversement);
-			}
+			));
 
 			header("Location: ".$this->get_link_to_action("details")."&fun_id=");
 			exit();
