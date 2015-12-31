@@ -66,14 +66,11 @@ class ModuleTreso extends Module {
 	protected function action_askreversement() {
 		$fun_id = $_GET['fun_id'];
 		global $CONF;
-		var_dump($CONF);
-		var_dump($fun_id);
 
 		// Plusieurs destinataires
 	    $to  = implode(', ', $CONF['mails_tresorier']);
 		// Sujet
 		$subject = 'Demande de reversement fondation #'.$fun_id;
-
 
 		//messsage via mail pour demande de reversement
 		$message = '
@@ -99,10 +96,10 @@ class ModuleTreso extends Module {
 	    $headers .= 'Reply-To: PayIcam <payicam.lille@gmail.com>' . "\r\n";
 	    $headers .= 'Subject: '.$subject . "\r\n";
 
-		var_dump(mail($to, $subject, $message, $headers));
-		exit();
-
 		$this->json_client->askReversement(array("fun_id" => $fun_id));
+
+		mail($to, $subject, $message, $headers);
+
 		header("Location: ".$this->get_link_to_action("details")."&fun_id=".$fun_id);
 		exit();
 	}
