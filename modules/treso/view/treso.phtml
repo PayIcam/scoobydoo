@@ -68,6 +68,7 @@ function formatPrix($p) {
         <th><p class="text-right">Montant</p></th>
         <th><p class="text-right">Frais</p></th>
         <th><p class="text-right">Montant reversé</p></th>
+        <th>Journal des ventes</th>
       </thead>
       <tbody>
         <?php foreach($this->param['details']->reversements as $rev) { ?>
@@ -77,6 +78,7 @@ function formatPrix($p) {
           <td><p class="text-right"><?php echo formatPrix(($rev->amount)/100); ?></p></td>
           <td><p class="text-right"><?php echo formatPrix(($rev->frais)/100); ?> ( <?php echo number_format($rev->taux / 100, 2, ',', ' '); ?> %)</p></td>
           <td><p class="text-right"><?php echo formatPrix(($rev->amount - $rev->frais)/100); ?></p></td>
+          <td><p><a href="<?php echo $this->param['url_journal'].'&fun_id='.$rev->funId.'&start='.$rev->startDate.'&end='.$rev->created; ?>" target="_blank" class="btn btn-info pull-right btn-small">Journal des ventes</a></p></td>
         </tr>
         <?php } ?>
       </tbody>

@@ -50,8 +50,8 @@ class ModuleTreso extends Module {
 				$fundation = $fun;
 			}
 		}
-		$start = isset($_POST['start']) ? $_POST['start'] : date("Y-m-d", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-		$end = isset($_POST['end']) ? $_POST['end'] : date("Y-m-d H:i:s");
+		$start = isset($_POST['start']) ? $_POST['start'] : (isset($_GET['start']) ? $_GET['start'] : date("Y-m-d", mktime(0, 0, 0, date("m")-1, date("d"), date("Y"))));
+		$end = isset($_POST['end']) ? $_POST['end'] : (isset($_GET['end']) ? $_GET['end'] : date("Y-m-d H:i:s"));
 
 		$this->view->set_template('html');
 		$this->view->set_view($this->get_path_module()."view/journal.phtml");
@@ -115,6 +115,7 @@ class ModuleTreso extends Module {
 		$this->view->set_view($this->get_path_module()."view/supertreso.phtml");
 
 		$this->view->add_param("details",  $this->json_client->getDetails());
+		$this->view->add_param("url_journal", $this->get_link_to_action("journal"));
 		$this->view->add_param("url_rev",  $this->get_link_to_action("reversement"));
 	}
 
@@ -142,6 +143,7 @@ class ModuleTreso extends Module {
 		}
 
 		$this->view->add_param("reversement", $this->json_client->getReversement(array("rev_id" => $_GET['rev_id'])));
+		$this->view->add_param("url_journal", $this->get_link_to_action("journal"));
 		$this->view->add_param("fundations", $this->json_client->getFundations());
 		$this->view->set_template('html');
 		$this->view->set_view($this->get_path_module()."view/reversement.phtml");
