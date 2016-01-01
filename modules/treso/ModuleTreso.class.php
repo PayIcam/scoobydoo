@@ -50,8 +50,8 @@ class ModuleTreso extends Module {
 				$fundation = $fun;
 			}
 		}
-		$start = isset($_POST['start']) ? $_POST['start'] : date("Y-m-d", mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")));
-		$end = isset($_POST['end']) ? $_POST['end'] : date("Y-m-d");
+		$start = isset($_POST['start']) ? $_POST['start'] : date("Y-m-d", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+		$end = isset($_POST['end']) ? $_POST['end'] : date("Y-m-d H:i:s");
 
 		$this->view->set_template('html');
 		$this->view->set_view($this->get_path_module()."view/journal.phtml");
