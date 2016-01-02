@@ -8,5 +8,13 @@ $CONF = array(
 	"mails_tresorier" => array(
         'tresorier1@contact.com',
         'tresorier2@contact.com'
+    ),
+    'PHPMailer' => array(
+        'Host' => '',
+        'SMTPAuth' => '',
+        'Username' => '',
+        'Password' => '',
+        'SMTPSecure' => '',
+        'Port' => ''
     )
 );

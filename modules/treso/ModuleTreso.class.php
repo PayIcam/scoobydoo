@@ -67,38 +67,56 @@ class ModuleTreso extends Module {
 		$fun_id = $_GET['fun_id'];
 		global $CONF;
 
-		// Plusieurs destinataires
-	    $to  = implode(', ', $CONF['mails_tresorier']);
-		// Sujet
-		$subject = 'Demande de reversement fondation #'.$fun_id;
+		require 'vendor/autoload.php';
+		$mail = new PHPMailer;
 
-		//messsage via mail pour demande de reversement
-		$message = '
+		// $mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+		$mail->isSMTP();                         // Set mailer to use SMTP
+		$mail->Host = $CONF['PHPMailer']['Host'];             // Specify main and backup SMTP servers
+		$mail->SMTPAuth = $CONF['PHPMailer']['SMTPAuth'];     // Enable SMTP authentication
+		$mail->Username = $CONF['PHPMailer']['Username'];     // SMTP username
+		$mail->Password = $CONF['PHPMailer']['Password'];     // SMTP password
+		$mail->SMTPSecure = $CONF['PHPMailer']['SMTPSecure']; // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = $CONF['PHPMailer']['Port'];             // TCP port to connect to
+
+		$mail->setFrom('payicam.lille@gmail.com', 'PayIcam Lille');
+
+		foreach ($CONF['mails_tresorier'] as $email) {
+			$mail->addAddress($email);
+		}
+
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$subject = 'Demande de reversement fondation #'.$fun_id;
+		$mail->Subject = $subject;
+		$mail->Body    = '
 		<html>
 			<head>
+				<meta charset="utf-8">
 				<title>'.$subject.'</title>
 			</head>
 			<body>
 				<h1>'.$subject.'</h1>
 				<p>Tu as une nouvelle demande de reversement sur Payicam</p>
-				<p><a href="'.$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super trésorerie de PayIcam</a></p>
+				<p><a href="'.$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super tresorerie de PayIcam</a></p>
 				<p><em>On t\'embrasse, la dev team de PayIcam</em></p>
 			</body>
 		</html>
 		';
+		$mail->AltBody = $subject."\n".
+			'Tu as une nouvelle demande de reversement sur Payicam'."\n".
+			$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id='."\n".
+			'lien vers la super tresorerie de PayIcam'."\n".
+			'On t\'embrasse, la dev team de PayIcam';
 
-	    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-	    $headers  = 'MIME-Version: 1.0' . "\r\n";
-	    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-
-	    // En-têtes additionnels
-	    $headers .= 'From: PayIcam <payicam.lille@gmail.com>' . "\r\n";
-	    $headers .= 'Reply-To: PayIcam <payicam.lille@gmail.com>' . "\r\n";
-	    $headers .= 'Subject: '.$subject . "\r\n";
 
 		$this->json_client->askReversement(array("fun_id" => $fun_id));
-
-		mail($to, $subject, $message, $headers);
+		if(!$mail->send()) {
+		    echo 'Message could not be sent.';
+		} else {
+		    // echo 'Message has been sent';
+		}
 
 		header("Location: ".$this->get_link_to_action("details")."&fun_id=".$fun_id);
 		exit();
