@@ -34,6 +34,7 @@ class ModuleArticle extends Module {
         $this->view->add_param('categorie_parents', $article_parents);
         $this->view->add_param('categories', $categories);
         $this->view->add_param('fundations', $fundations);
+        $this->view->add_param('isSuperAdmin', $this->json_client->isSuperAdmin());
     }
 
 	public function action_get_tree() {

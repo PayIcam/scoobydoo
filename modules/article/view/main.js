@@ -12,7 +12,7 @@ $(document).ready(function () {
 	// activer le plugin jqtree
 	$('#tree').tree({
         data: [],
-		autoOpen: 1,
+		autoOpen: (isSuperAdmin != undefined && isSuperAdmin)?false:true,
 		//dragAndDrop: true,
 		selectable: true,
 		/*onCanMove: function(node) {
