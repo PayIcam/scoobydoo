@@ -181,4 +181,4 @@
 
 
 </div><!--/row-->
-<script>var isSuperAdmin = <?= $this->param['isSuperAdmin'] ?></script>
+<script>var isSuperAdmin = <?= (!empty($this->param['isSuperAdmin']))?1:0; ?>;</script>
