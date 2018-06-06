@@ -201,6 +201,7 @@ class ModuleArticle extends Module {
         $category = array(
             "obj_id" => null, // null implique la creation d'une nouvelle category
             "name" => $name,
+            "service" => "Mozart",
             "parent_id" => $parent_id,
             "fun_id" => $fundation_id
         );
