@@ -42,8 +42,8 @@ class ModuleArticle extends Module {
 
         try {
 		    $fundations = $this->json_client->getFundations();
-		    $categories = $this->json_client->getCategories(array('services[]' => 'Mozart'));
-		    $articles = $this->json_client->getProducts(array('services[]' => 'Mozart'));
+		    $categories = $this->json_client->getCategories(array('services' => 'Mozart'));
+		    $articles = $this->json_client->getProducts(array('services' => 'Mozart'));
         } catch (Exception $e) {
 			$this->view->set_param(array(array('name'=>'echec')));
             return;
