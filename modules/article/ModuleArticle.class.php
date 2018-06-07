@@ -20,7 +20,7 @@ class ModuleArticle extends Module {
 
         // Get informations
         $fundations = $this->json_client->getFundations();
-        $categories = $this->json_client->getCategories(array('service' => 'Mozart'));
+        $categories = $this->json_client->getCategories(['params[service]' => 'Mozart']);
 
         $article_parents = array();
         foreach($fundations as $fundation) {
@@ -42,8 +42,8 @@ class ModuleArticle extends Module {
 
         try {
 		    $fundations = $this->json_client->getFundations();
-		    $categories = $this->json_client->getCategories(array('service' => 'Mozart'));
-		    $articles = $this->json_client->getProducts(array('service' => 'Mozart'));
+		    $categories = $this->json_client->getCategories(['params[service]' => 'Mozart']);
+		    $articles = $this->json_client->getProducts(['params[service]' => 'Mozart']);
         } catch (Exception $e) {
 			$this->view->set_param(array(array('name'=>'echec')));
             return;
@@ -103,7 +103,7 @@ class ModuleArticle extends Module {
 	public function action_fundation_details() {
 		$this->view->set_template('json');
 		$id = $_REQUEST['id'];
-        $result['success']['categories'] = $this->json_client->getCategories(array("fun_ids" => json_encode(array($id)), "service" => "Mozart"));
+        $result['success']['categories'] = $this->json_client->getCategories(['params[fun_ids]'=>json_encode(array($id)), "params[service]" => "Mozart"]);
 		$this->view->set_param($result);
 	}
 
