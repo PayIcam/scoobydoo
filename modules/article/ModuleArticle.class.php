@@ -20,7 +20,7 @@ class ModuleArticle extends Module {
 
         // Get informations
         $fundations = $this->json_client->getFundations();
-        $categories = $this->json_client->getCategories();
+        $categories = $this->json_client->getCategories(array('service' => 'Mozart'));
 
         $article_parents = array();
         foreach($fundations as $fundation) {
@@ -103,7 +103,7 @@ class ModuleArticle extends Module {
 	public function action_fundation_details() {
 		$this->view->set_template('json');
 		$id = $_REQUEST['id'];
-        $result['success']['categories'] = $this->json_client->getCategories(array("fun_ids" => json_encode(array($id))));
+        $result['success']['categories'] = $this->json_client->getCategories(array("fun_ids" => json_encode(array($id)), "service" => "Mozart"));
 		$this->view->set_param($result);
 	}
 
