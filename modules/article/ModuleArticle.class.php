@@ -20,7 +20,7 @@ class ModuleArticle extends Module {
 
         // Get informations
         $fundations = $this->json_client->getFundations();
-        $categories = $this->json_client->getCategories();
+        $categories = $this->json_client->getCategories(['params[service]' => 'Mozart']);
 
         $article_parents = array();
         foreach($fundations as $fundation) {
@@ -42,15 +42,15 @@ class ModuleArticle extends Module {
 
         try {
 		    $fundations = $this->json_client->getFundations();
-		    $categories = $this->json_client->getCategories();
-		    $articles = $this->json_client->getProducts();
+		    $categories = $this->json_client->getCategories(['params[service]' => 'Mozart']);
+		    $articles = $this->json_client->getProducts(['params[service]' => 'Mozart']);
         } catch (Exception $e) {
 			$this->view->set_param(array(array('name'=>'echec')));
             return;
         }
 
 		$arr = array('root' => $this::ArrNode('root','root',NULL,'root',NULL));
-		
+
 		foreach ($fundations as $fundation) {
             if($fundation->fun_id) {
 			    $arr['fun'.$fundation->fun_id] = $this::ArrNode(
@@ -90,7 +90,7 @@ class ModuleArticle extends Module {
 		}
 
 		// echo '<pre>';print_r($categories);echo '</pre>';
-		
+
 		$tree = $this::generate_tree($arr, 'parent_id');
 		$tree = $tree[0]['children'];
 
@@ -103,7 +103,7 @@ class ModuleArticle extends Module {
 	public function action_fundation_details() {
 		$this->view->set_template('json');
 		$id = $_REQUEST['id'];
-        $result['success']['categories'] = $this->json_client->getCategories(array("fun_ids" => json_encode(array($id))));	
+        $result['success']['categories'] = $this->json_client->getCategories(['params[fun_ids]'=>json_encode(array($id)), "params[service]" => "Mozart"]);
 		$this->view->set_param($result);
 	}
 
@@ -125,7 +125,7 @@ class ModuleArticle extends Module {
 		$stock = $_REQUEST['stock'];
 		$alcool = isset($_REQUEST['alcool']) ? 1 : 0;
 		$cotisant = isset($_REQUEST['cotisant']) ? 1 : 0;
-  	
+
         $price = str_replace(',','.', $_REQUEST['price']);
         $price *= 100;
 
@@ -137,9 +137,9 @@ class ModuleArticle extends Module {
 
             if(!empty($image)){
                 $imageId = $this->json_client->uploadImage(array("image" => $image));
-            }      
+            }
         }
-    
+
         if(!empty($_REQUEST['delete_image'])){
             $imageId = -1;
         }
@@ -147,11 +147,12 @@ class ModuleArticle extends Module {
         $product = array(
             "obj_id" => null, // null implique la création d'un article
             "name" => $name,
-            "parent" => $cat_id, 
-            "prix" => $price, 
-            "stock" => $stock, 
-            "alcool" => $alcool, 
-            "image" => $imageId, 
+            "service" => "Mozart",
+            "parent" => $cat_id,
+            "prix" => $price,
+            "stock" => $stock,
+            "alcool" => $alcool,
+            "image" => $imageId,
             "fun_id" => $fun_id,
             "tva" => $tva,
             "cotisant" => $cotisant
@@ -196,10 +197,11 @@ class ModuleArticle extends Module {
 		else {
 			$parent_id = $parent;
 		}
-        
+
         $category = array(
             "obj_id" => null, // null implique la creation d'une nouvelle category
             "name" => $name,
+            "service" => "Mozart",
             "parent_id" => $parent_id,
             "fun_id" => $fundation_id
         );
@@ -208,7 +210,7 @@ class ModuleArticle extends Module {
 		if (isset($_REQUEST['id']) and !empty($_REQUEST['id'])) {
 			$category['obj_id'] = $_REQUEST['id'];
 		}
-		
+
         $result = $this->json_client->setCategory($category);
 		$this->view->set_param($result);
 	}
@@ -252,7 +254,7 @@ class ModuleArticle extends Module {
         echo base64_decode($img_base64->success);
         die();
     }
-	
+
 	/**
 	 * A partir d'une array cré l'arbre hierarchisé associé, fonction récursive.
 	 *
@@ -285,12 +287,12 @@ class ModuleArticle extends Module {
 			return array("content" => "Articles", "class"=>"", "link"=>$this->get_link_to_action("index")); /*, "submenu"=> array(
 							  array("content" => "Gestion", "class"=>"", "link"=>$this->get_link_to_action("index")),
 							  array("content" => "", "class"=>"divider", "link"=>"#"),
-                              array("content" => "Ajouter un article", "class"=>"", "link"=>$this->get_link_to_action("add-article")), 
+                              array("content" => "Ajouter un article", "class"=>"", "link"=>$this->get_link_to_action("add-article")),
                               array("content" => "Ajouter une catégorie", "class"=>"", "link"=>$this->get_link_to_action("add-categorie")))); */
 		else
 			return;
-                              
-                              
+
+
 	}
 
 }
