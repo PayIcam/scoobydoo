@@ -108,11 +108,12 @@ class ModuleArticle extends Module {
 	}
 
 	public function action_article_details() {
-		$this->view->set_template('json');
-		$id = $_REQUEST['id'];
+        $this->view->set_template('json');
+        $id = $_REQUEST['id'];
         $fun_id = $_REQUEST['fun_id'];
-		$result = $this->json_client->getProduct(array("obj_id" => $id, "fun_id" => $fun_id));
-        $result->success->image_url = $this->get_link_to_action('get_image') . "&image_id=".$result->success->image;
+        $result = $this->json_client->getProduct(array("obj_id" => $id, "fun_id" => $fun_id));
+        $result->success->image_url = $result->success->image_path;
+
         // TODO check $result
 		$this->view->set_param($result);
 	}
@@ -131,12 +132,46 @@ class ModuleArticle extends Module {
 
         $tva = str_replace(',','.', $_REQUEST['tva']);
 
-        $imageId = 0;
-        if(!empty($_FILES['image']) && $_FILES["image"]["error"] == 0 && $_FILES["image"]["size"] < 1*1024*1024){
-            $image = base64_encode(file_get_contents($_FILES["image"]["tmp_name"]));
+        $possible_extensions = ['png', 'jpg'];
 
-            if(!empty($image)){
-                $imageId = $this->json_client->uploadImage(array("image" => $image));
+        if(!empty($_FILES['image']) && $_FILES["image"]["error"] !== UPLOAD_ERR_NO_FILE) {
+            switch($_FILES['image']['error']) {
+                case UPLOAD_ERR_INI_SIZE:
+                case UPLOAD_ERR_FORM_SIZE:
+                    echo 'Taille mauvaise';
+                    // $ErrorsCtrl->addError('file_path', "Veuillez transmettre un fichier de moins de 5 Mo.");
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    echo 'Fichier incomplet';
+                    // $ErrorsCtrl->addError('file_path', "Il y a eu une erreur, le fichier n'a pas été reçu totalement. Veuillez réessayer.");
+                    break;
+                default:
+                    $file_extension = strtolower(substr(strrchr($_FILES['image']['name'], '.'), 1));
+                    if(in_array($file_extension, $possible_extensions)){
+                        $fundation_folder_path = '../server/img/articles/' . $fun_id . '/';
+                        $category_folder_path = $fundation_folder_path . $cat_id . '/';
+                        if (!file_exists($fundation_folder_path)) {
+                                mkdir($fundation_folder_path);
+                                mkdir($category_folder_path);
+                        }
+                        elseif(!file_exists($category_folder_path))
+                            mkdir($category_folder_path);
+
+                        $image_path = $category_folder_path . $name . '.' . $file_extension;
+
+                        if(move_uploaded_file($_FILES['image']['tmp_name'], $image_path)) {
+                            $envoi = array("image_path" => $image_path);
+                            $imageId = $this->json_client->uploadImage($envoi);
+                        }
+                        else {
+                            echo 'Erreur inconnue image pas transférée';
+                        }
+
+                    }
+                    else {
+                        echo 'mauvais format';
+                        // $ErrorsCtrl->addError('file_path', "Nous ne supportons pas votre type de fichier.");
+                }
             }
         }
 
@@ -231,7 +266,7 @@ class ModuleArticle extends Module {
 		$this->view->set_template('js');
 
 		// On veut égallement une vue particuliére
-		$myview = $this->get_path_module().'view/main.js';
+        $myview = $this->get_path_module().'view/main.js';
 		$this->view->set_view($myview);
 
 		// Configuration des parametres nécessaires à la vue (les urls ajax)
@@ -249,9 +284,8 @@ class ModuleArticle extends Module {
 
     public function action_get_image() {
         $image_id = $_REQUEST['image_id'];
-        $img_base64 = $this->json_client->getImage64(array("img_id" => $image_id, "outw" => 200, "outh" => 200));
-        header('Content-Type: image/png');
-        echo base64_decode($img_base64->success);
+        $path = $this->json_client->getImagePath($image_id);
+        echo $path;
         die();
     }
 

@@ -8,9 +8,9 @@
 		<!--button id="tojson" class="btn">to json</button>
 		<button id="refresh" class="btn">refresh</button-->
 		<div id="detailsdiv">
-			
+
 			<div id="alert"></div>
-			
+
 			<div class="btn-group pull-right">
 				<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 					<i class="icon-plus icon-white"></i><span class="caret"></span>
@@ -88,6 +88,7 @@
 						<div class="control-group">
 							<label class="control-label" for="article_field_image">Image</label>
 							<div class="controls">
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
 									<input type="file" name="image" id="article_field_image" size="16">
 							</div>
 						</div>
@@ -102,7 +103,7 @@
 					</fieldset>
 				</form>
 			</div>
-			
+
 			<!--			CATEGORIE			-->
 			<div id="categorie_details" style="display: none;">
 				<h2><span id="categorie_name"></span> (#<span id="categorie_id"></span>)</h2>
@@ -175,7 +176,7 @@
 				Tchuss
 				</p>
 			</div>
-			
+
 		</div>
 	</div><!--/span-->
 

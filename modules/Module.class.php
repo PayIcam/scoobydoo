@@ -16,8 +16,8 @@ class Module {
                         $motif = preg_match('/^(.*)(\/)$/', $CONF['soap_url'], $r);
                         var_dump($r);
                         var_dump($motif);
-                        $CONF['soap_url'] = current($r[0]); 
-                } 
+                        $CONF['soap_url'] = current($r[0]);
+                }
                 $_SESSION[$this->service]["json_client"] = new \JsonClient\AutoJsonClient($CONF['soap_url'], $this->service);
                 $this->json_client = $_SESSION[$this->service]["json_client"];
             } else {
@@ -68,7 +68,7 @@ class Module {
                 die("error login cas.");
             }
             try {
-                $this->json_client->loginApp(array("key"=>$CONF['application_key']));     
+                $this->json_client->loginApp(array("key"=>$CONF['application_key']));
             } catch (\JsonClient\JsonException $e) {
                 die("error login application.");
             }
@@ -92,8 +92,9 @@ class Module {
 		else {
 			$action = 'index';
 		}
-		
+
 		$method = $this->actionname_to_methodname($action);
+
 		if (method_exists($this, $method)) {
 			$this->$method();
 		}
@@ -106,7 +107,7 @@ class Module {
 		$classname = get_class($this);
 		return strtolower(substr($classname, strlen('module')));
 	}
-	
+
 	public function get_path_module() {
 		return 'modules/'.$this->get_module_name().'/';
 	}

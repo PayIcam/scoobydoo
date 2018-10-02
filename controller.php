@@ -5,7 +5,7 @@ class Controller {
 	public function __construct(&$view) {
 		$this->view = $view;
 	}
-	
+
 	public function execute()
 	{
 		if (isset($_GET['module'])) {
@@ -26,7 +26,7 @@ class Controller {
 		/*$menus = array(
                         array("content" => "Index", "class"=>"", "link"=>"#"),
                         array("content" => "Articles", "class"=>"", "link"=>"#", "submenu"=> array(
-                              array("content" => "Ajouter un article", "class"=>"", "link"=>"#"), 
+                              array("content" => "Ajouter un article", "class"=>"", "link"=>"#"),
                               array("content" => "Ajouter une catégorie", "class"=>"", "link"=>"#"),
                               array("content" => "", "class"=>"divider", "link"=>"#"),
                               array("content" => "My divided content", "class"=>"", "link"=>"#"))),
@@ -57,12 +57,12 @@ class Controller {
 		$moduleclassname = $this->modulename_to_classname($modulename);
 		$modulefilepath = $this->modulename_to_modulepath($modulename).$this->modulename_to_classfilename($modulename);
 		$module = null;
-		
+
 		if (file_exists($modulefilepath)) {
 			require_once $modulefilepath;
 			$module = new $moduleclassname($this->view);
 		}
-		
+
 		return $module;
 	}
 

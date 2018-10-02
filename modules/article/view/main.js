@@ -105,7 +105,7 @@ $(document).ready(function () {
 		}
 	);*/
 
-	 
+
 	// bind 'tree.click' event
 	$('#tree').bind(
 		'tree.click',
@@ -303,7 +303,7 @@ function clear_categorie() {
 
 /**
  * Remplir la vue article.
- * @data {id, name, price, stock, categorie_id} data donées récupérée via ajax 
+ * @data {id, name, price, stock, categorie_id} data donées récupérée via ajax
  */
 function fill_article(data) {
 	var price = data.price;
@@ -311,7 +311,7 @@ function fill_article(data) {
 		price /= 100.0;
 		price = (''+price).replace('.', ',');
 	}
-	
+
 	var tva = data.tva;
 	if (tva) {
 		tva = (''+tva).replace('.', ',');
@@ -332,7 +332,7 @@ function fill_article(data) {
     else {
         $("#article_field_delete_image_div").hide();
     }
-        
+
 	if (data.alcool == 1)
 		$('#article_field_alcool').prop('checked', true);
 	else
@@ -454,13 +454,13 @@ function load_article_details(id) {
 	// update globals
 	current_node_view = node;
 	current_categorie_id = node.parent.id;
-    current_fundation_id = node.parent.fundation_id
-	
+    current_fundation_id = node.parent.fundation_id;
+
 	fill_article({id: id, name: node.name});
 	display_article_view();
 	start_details_spinner();
 	$.ajax({
-		url: '<?php echo $this->get_param("details_article") ?>',
+		url: '<?php echo $this->get_param("details_article");?>',
 		data: {id: id, fun_id: node.fun_id},
 		async: true,
 		success: function(result) {
@@ -491,7 +491,7 @@ function load_categorie_details(id) {
 	current_node_view = node;
 	current_categorie_id = node.id;
 	current_fundation_id = node.parent.id;
-	
+
 	fill_categorie({id: id, name: node.name});
 	display_categorie_view();
 	start_details_spinner();
@@ -528,7 +528,7 @@ function load_fundation_details(id) {
 	// update globals
 	current_node_view = node;
 	current_fundation_id = node.id;
-	
+
 	fill_fundation({id: id.substring(3), name: node.name});
 	display_fundation_view();
 	start_details_spinner();
@@ -564,7 +564,7 @@ function save_article() {
 	start_details_spinner();
     var formData = new FormData($('form')[0]);
     formData.append("id", $('#article_id').html());
-    
+
     $.ajax({
         url: '<?php echo $this->get_param("save_article") ?>',  //server script to process data
         type: 'POST',

@@ -1,7 +1,7 @@
 <?php
 /*
 	Le constructeur de la classe View préconfigure la classe avec une configuration par défaut.
-	Ce qui décide réellement ce que doit afficher la vue est le template. 
+	Ce qui décide réellement ce que doit afficher la vue est le template.
 	==> Normalement un module, ne modifie pas le template ! (Par contre la vue peut le changer en fonction que l'on veuille une sortie json ou html par exemple)
 	Les modules doivent par contre fair charger leurs propres vue à l'intérieur du template. Par l'intérmédiaire du view_url.
 */
@@ -107,7 +107,7 @@ class View {
 		global $CONF;
 		return $CONF['scoobydoo_url'].'?module='.$modulename;
 	}
-	
+
 	public function set_menu($menu) {
 		$this->menus = $menu;
 	}
