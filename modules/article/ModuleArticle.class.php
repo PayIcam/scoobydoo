@@ -121,6 +121,7 @@ class ModuleArticle extends Module {
 	public function action_save_article() {
 		$this->view->set_template('json');
 		$name = $_REQUEST['name'];
+        $img_name = str_replace(['"', "'", " ", "/", "\\"], "_", $name);
 		$cat_id = $_REQUEST['categorie_id'];
 		$fun_id = $_REQUEST['fundation_id'];
 		$stock = $_REQUEST['stock'];
@@ -157,7 +158,7 @@ class ModuleArticle extends Module {
                         elseif(!file_exists($category_folder_path))
                             mkdir($category_folder_path);
 
-                        $image_path = $category_folder_path . $name . '.' . $file_extension;
+                        $image_path = $category_folder_path . $img_name . '.' . $file_extension;
 
                         if(move_uploaded_file($_FILES['image']['tmp_name'], $image_path)) {
                             $envoi = array("image_path" => $image_path);
