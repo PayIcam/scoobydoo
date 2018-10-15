@@ -5,7 +5,7 @@ $('.typeahead-user').typeahead({
             list_name = []
             for(item in data.result) {
                 map[data.result[item].name] = data.result[item].id;
-                list_name.push(data.result[item].name);
+                list_name.push(data.result[item].name + ' (' + data.result[item].mail + ')');
             }
             return process(list_name);
         });
