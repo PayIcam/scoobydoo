@@ -4,8 +4,9 @@ $('.typeahead-user').typeahead({
         return $.get('<?php echo $this->param['autocomplete']; ?>', { query: query }, function (data) {
             list_name = []
             for(item in data.result) {
-                map[data.result[item].name] = data.result[item].id;
-                list_name.push(data.result[item].name + ' (' + data.result[item].mail + ')');
+                display = data.result[item].name + ' (' + data.result[item].mail + ')';
+                map[display] = data.result[item].id;
+                list_name.push(display);
             }
             return process(list_name);
         });
