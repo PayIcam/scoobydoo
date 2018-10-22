@@ -89,13 +89,8 @@ class ModuleArticle extends Module {
 			);
 		}
 
-		// echo '<pre>';print_r($categories);echo '</pre>';
-
 		$tree = $this::generate_tree($arr, 'parent_id');
 		$tree = $tree[0]['children'];
-
-		// echo '<pre>';print_r($tree);echo '</pre>';
-		// die();
 
 		$this->view->set_param($tree);
 	}
@@ -195,11 +190,11 @@ class ModuleArticle extends Module {
         );
 
 
-		if (isset($_REQUEST['id']) and !empty($_REQUEST['id'])) {
+		if(isset($_REQUEST['id']) and !empty($_REQUEST['id'])) {
             $product['obj_id'] = $_REQUEST['id'];
 		}
         $result = $this->json_client->setProduct($product);
-		$this->view->set_param($result);
+        $this->view->set_param($result);
 	}
 
 	public function action_delete_article() {

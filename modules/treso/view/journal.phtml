@@ -29,16 +29,16 @@ function formatPrix($p) {
       <thead>
         <th>Article</th>
         <th><p class="text-right">Prix unitaire TTC</p></th>
-        <th><p class="text-right">Tva</p></th>
+        <!-- <th><p class="text-right">Tva</p></th> -->
         <th>Nombre de ventes</th>
         <th><p class="text-right">Somme des ventes TTC</p></th>
       </thead>
       <tbody>
-        <?php 
+        <?php
           $tva = array();
           $nb_sell = 0;
           $total = 0;
-          foreach($this->param['journal'] as $row) { 
+          foreach($this->param['journal'] as $row) {
             if(array_key_exists($row->pur_tva, $tva)) {
               $tva[$row->pur_tva] += $row->total;
             } else {
@@ -50,7 +50,7 @@ function formatPrix($p) {
             <tr>
               <td><?php echo $row->obj_name; ?></td>
               <td><p class="text-right"><?php echo formatPrix($row->pur_unit_price / 100); ?></p></td>
-              <td><p class="text-right"><?php echo number_format($row->pur_tva, 2, ',', ' '); ?> %</p></td>
+              <!-- <td><p class="text-right"><?php echo number_format($row->pur_tva, 2, ',', ' '); ?> %</p></td> -->
               <td><?php echo $row->qte; ?></td>
               <td><p class="text-right"><?php echo formatPrix($row->total / 100); ?></p></td>
             </tr>
@@ -80,9 +80,9 @@ function formatPrix($p) {
         <th><p class="text-right">A déclarer</p></th>
       </thead>
       <tbody>
-        <?php 
+        <?php
         $total_declare = 0;
-        foreach($tva as $t => $a) { 
+        foreach($tva as $t => $a) {
           $declare = ($a * $t / ($t + 100));
           $total_declare += $declare;
           ?>

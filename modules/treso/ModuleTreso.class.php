@@ -30,12 +30,12 @@ class ModuleTreso extends Module {
 		}
 
 		$this->view->set_template('html');
-		$this->view->set_view($this->get_path_module()."view/treso.phtml");
+        $this->view->set_view($this->get_path_module()."view/treso.phtml");
 
-		$this->view->add_param("fundation", $fundation);
-		$this->view->add_param("details", $this->json_client->getDetails(array("fun_id" => $fun_id)));
-		$this->view->add_param("url_ask", $this->get_link_to_action("askreversement")."&fun_id=".$fun_id);
-		$this->view->add_param("url_journal", $this->get_link_to_action("journal")."&fun_id=".$fun_id);
+        $this->view->add_param("fundation", $fundation);
+        $this->view->add_param("details", $this->json_client->getDetails(array("fun_id" => $fun_id)));
+        $this->view->add_param("url_ask", $this->get_link_to_action("askreversement")."&fun_id=".$fun_id);
+        $this->view->add_param("url_journal", $this->get_link_to_action("journal")."&fun_id=".$fun_id);
 	}
 
 	protected function action_journal() {
