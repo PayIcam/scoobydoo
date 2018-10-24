@@ -100,7 +100,8 @@ class ModuleTreso extends Module {
 				<h1>'.$subject.'</h1>
 				<p>Tu as une nouvelle demande de reversement sur Payicam</p>
 				<p><a href="'.$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super tresorerie de PayIcam</a></p>
-				<p><em>On t\'embrasse, la dev team de PayIcam</em></p>
+                <p>A bientôt,</p>
+				<p><em>PayIcam</em></p>
 			</body>
 		</html>
 		';
@@ -108,7 +109,8 @@ class ModuleTreso extends Module {
 			'Tu as une nouvelle demande de reversement sur Payicam'."\n".
 			$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id='."\n".
 			'lien vers la super tresorerie de PayIcam'."\n".
-			'On t\'embrasse, la dev team de PayIcam';
+            'A bientôt,'."\n".
+            "PayIcam";
 
 
 		$this->json_client->askReversement(array("fun_id" => $fun_id));
@@ -186,13 +188,16 @@ class ModuleTreso extends Module {
                 <body>
                     <h1>'.$subject.'</h1>
                     <p>Le reversement demandé le ' . $reversement->created .  ' vient d\'être fait !</p>
-                    <p><em>On t\'embrasse, la dev team de PayIcam</em></p>
+                    <p>A bientôt,</p>
+                    <p><em>PayIcam</em></p>
                 </body>
             </html>
             ';
             $mail->AltBody = $subject."\n".
                 'Le reversement demandé le ' . $reversement->created .  ' vient d\'être fait !'."\n".
-                'On t\'embrasse, la dev team de PayIcam';
+                'A bientôt,'."\n".
+                "PayIcam";
+
 
             $mail->addAddress($asked_by_email);
 

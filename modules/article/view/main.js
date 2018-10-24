@@ -612,7 +612,7 @@ function on_save_success(data, fill_fn) {
 			//fill_fn(data);
 
 			// affiche le message de succès
-			show_alert_success();
+			show_alert_success("La sauvegarde a bien été effectuée");
 		}
 		else {
 			show_alert_error(result.error,result.error_msg);
@@ -634,7 +634,7 @@ function delete_article() {
 		success: function(result) {
 			stop_details_spinner();
 			if (result.success) {
-				show_alert_success();
+				show_alert_success("L'article a bien été supprimé");
 				var node = get_nod_by_id(data.id);
 				var parent = node.parent;
 				$('#tree').tree('removeNode', node);
@@ -662,7 +662,7 @@ function delete_categorie() {
 		success: function(result) {
 			stop_details_spinner();
 			if (result.success) {
-				show_alert_success();
+				show_alert_success("La catégorie a bien été supprimée");
 				var node = get_nod_by_id(data.id);
 				var parent = node.parent;
 				$('#tree').tree('removeNode', node);
@@ -679,11 +679,10 @@ function delete_categorie() {
 /**
  * Afficher un message vert pour dire que succès il y a eu.
  */
-function show_alert_success() {
+function show_alert_success(message) {
 	$('#alert').html(
 		'<div class="alert alert-success">'+
-		'	<button type="button" class="close" data-dismiss="alert">×</button>'+
-		'	<strong>Félicitation !</strong> Sans embrouilles à ta fin tu es arrivé.'+
+		'	<button type="button" class="close" data-dismiss="alert">×</button>'+ message +
 		'</div>'
 	);
 	bind_close_alert();
@@ -696,7 +695,7 @@ function show_alert_error(err_code,err_msg) {
 	$('#alert').html(
 		'<div class="alert alert-error">'+
 		'	<button type="button" class="close" data-dismiss="alert">×</button>'+
-		'	<strong>Crotte de biquette !</strong> Il y a eu une couille.<br/>'+
+		'	<strong>Désolé du dérangement</strong> Il y a eu un souci technique. Merci de nous contacter directement, ou sur notre mail contact.payicam@gmail.com<br/>'+
 		'	Code d\'erreur : <strong>'+err_code+'</strong>. '+err_msg+
 		'</div>'
 	);
