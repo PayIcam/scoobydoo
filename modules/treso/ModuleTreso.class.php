@@ -80,7 +80,7 @@ class ModuleTreso extends Module {
 		$mail->SMTPSecure = $CONF['PHPMailer']['SMTPSecure']; // Enable TLS encryption, `ssl` also accepted
 		$mail->Port = $CONF['PHPMailer']['Port'];             // TCP port to connect to
 
-		$mail->setFrom('payicam.lille@gmail.com', 'PayIcam Lille');
+		$mail->setFrom('contact.payicam@gmail.com', 'Contact PayIcam');
 
 		foreach ($CONF['mails_tresorier'] as $email) {
 			$mail->addAddress($email);
@@ -138,6 +138,7 @@ class ModuleTreso extends Module {
 	}
 
 	protected function action_reversement() {
+        require 'vendor/autoload.php';
 		$isAdmin = $this->json_client->isAdmin();
 		if(!$isAdmin) {
 			header("Location: ".$this->get_link_to_action("index"));
@@ -155,6 +156,51 @@ class ModuleTreso extends Module {
 				"taux" => $taux*100,
 				"frais" => $frais*100
 			));
+
+            $reversement = $this->json_client->getReversement(array("rev_id" => $rev_id));
+            $asked_by_email = $this->json_client->getUserEmail(array("usr_id" => $reversement->usrAsk));
+
+            global $CONF;
+            $mail = new PHPMailer;
+
+            // $mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+            $mail->isSMTP();                         // Set mailer to use SMTP
+            $mail->Host = $CONF['PHPMailer']['Host'];             // Specify main and backup SMTP servers
+            $mail->SMTPAuth = $CONF['PHPMailer']['SMTPAuth'];     // Enable SMTP authentication
+            $mail->Username = $CONF['PHPMailer']['Username'];     // SMTP username
+            $mail->Password = $CONF['PHPMailer']['Password'];     // SMTP password
+            $mail->SMTPSecure = $CONF['PHPMailer']['SMTPSecure']; // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = $CONF['PHPMailer']['Port'];             // TCP port to connect to
+
+            $mail->setFrom('contact.payicam@gmail.com', 'Contact PayIcam');
+
+            $subject = 'Le reversement est fait !';
+            $mail->Subject = $subject;
+            $mail->Body    = '
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>'.$subject.'</title>
+                </head>
+                <body>
+                    <h1>'.$subject.'</h1>
+                    <p>Le reversement demandé le ' . $reversement->created .  ' vient d\'être fait !</p>
+                    <p><em>On t\'embrasse, la dev team de PayIcam</em></p>
+                </body>
+            </html>
+            ';
+            $mail->AltBody = $subject."\n".
+                'Le reversement demandé le ' . $reversement->created .  ' vient d\'être fait !'."\n".
+                'On t\'embrasse, la dev team de PayIcam';
+
+            $mail->addAddress($asked_by_email);
+
+            $mail->isHTML(true);                                  // Set email format to HTML
+
+            if(!$mail->send()) {
+                die('Message could not be sent.');
+            }
 
 			header("Location: ".$this->get_link_to_action("details")."&fun_id=");
 			exit();
