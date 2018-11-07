@@ -79,8 +79,10 @@ class ModuleTreso extends Module {
 		$mail->Password = $CONF['PHPMailer']['Password'];     // SMTP password
 		$mail->SMTPSecure = $CONF['PHPMailer']['SMTPSecure']; // Enable TLS encryption, `ssl` also accepted
 		$mail->Port = $CONF['PHPMailer']['Port'];             // TCP port to connect to
+        $mail->Encoding = 'base64';
+        $mail->CharSet = 'UTF-8';
 
-		$mail->setFrom('contact.payicam@gmail.com', 'Contact PayIcam');
+		$mail->setFrom('noreply.payicam@gmail.com', 'No Reply PayIcam');
 
 		foreach ($CONF['mails_tresorier'] as $email) {
 			$mail->addAddress($email);
@@ -174,10 +176,12 @@ class ModuleTreso extends Module {
             $mail->Password = $CONF['PHPMailer']['Password'];     // SMTP password
             $mail->SMTPSecure = $CONF['PHPMailer']['SMTPSecure']; // Enable TLS encryption, `ssl` also accepted
             $mail->Port = $CONF['PHPMailer']['Port'];             // TCP port to connect to
+            $mail->Encoding = 'base64';
+            $mail->CharSet = 'UTF-8';
 
-            $mail->setFrom('contact.payicam@gmail.com', 'Contact PayIcam');
+            $mail->setFrom('noreply.payicam@gmail.com', 'No Reply PayIcam');
 
-            $subject = 'Le reversement est fait !';
+            $subject = 'Reversement effectué !';
             $mail->Subject = $subject;
             $mail->Body    = '
             <html>
