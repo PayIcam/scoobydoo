@@ -100,7 +100,7 @@ class ModuleTreso extends Module {
 			</head>
 			<body>
 				<h1>'.$subject.'</h1>
-				<p>Tu as une nouvelle demande de reversement sur Payicam</p>
+				<p>Tu as une nouvelle demande de reversement sur PayIcam</p>
 				<p><a href="'.$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id=" title="pour t\'ammener direct à la bonne page">lien vers la super tresorerie de PayIcam</a></p>
                 <p>A bientôt,</p>
 				<p><em>PayIcam</em></p>
@@ -108,7 +108,7 @@ class ModuleTreso extends Module {
 		</html>
 		';
 		$mail->AltBody = $subject."\n".
-			'Tu as une nouvelle demande de reversement sur Payicam'."\n".
+			'Tu as une nouvelle demande de reversement sur PayIcam'."\n".
 			$CONF['scoobydoo_url'].'?module=treso&action=details&fun_id='."\n".
 			'lien vers la super tresorerie de PayIcam'."\n".
             'A bientôt,'."\n".
@@ -117,7 +117,7 @@ class ModuleTreso extends Module {
 
 		$this->json_client->askReversement(array("fun_id" => $fun_id));
 		if(!$mail->send()) {
-		    echo 'Message could not be sent.';
+		    die('Message could not be sent.');
 		} else {
 		    // echo 'Message has been sent';
 		}
