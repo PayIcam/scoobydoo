@@ -47,7 +47,7 @@ function formatPrix($p) {
                             $tva = array();
                             $nb_sell['payicam'] = 0;
                             $total['payicam'] = 0;
-                            foreach($this->param['journal']['payicam'] as $row) {
+                            foreach($this->param['journal']->payicam as $row) {
                                 if(array_key_exists($row->pur_tva, $tva)) {
                                     $tva[$row->pur_tva] += $row->total;
                                 } else {
@@ -85,7 +85,7 @@ function formatPrix($p) {
                             $tva = array();
                             $nb_sell['event'] = 0;
                             $total['event'] = 0;
-                            foreach($this->param['journal']['event'] as $row) {
+                            foreach($this->param['journal']->event as $row) {
                                 $nb_sell['event'] += $row->qte;
                                 $total['event'] += $row->total;
                                 ?>
